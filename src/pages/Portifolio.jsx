@@ -20,7 +20,10 @@ import {
   RightPainel,
   LeftPainel,
   Submit,
+  Image,
 } from "./Components";
+
+const stocks = ["Ten", "Twenty", "Thirty"];
 
 const Portifolio = () => {
   const columns = [
@@ -61,6 +64,7 @@ const Portifolio = () => {
   const [risk, setRisk] = useState("");
   const [acao, setAcao] = useState("");
   const [id, setId] = useState(1);
+  const [showImage, setShowImage] = useState(false);
 
   const handleClickCheckIn = (e) => {
     setCheckInDay(e.target.value);
@@ -141,9 +145,17 @@ const Portifolio = () => {
             value={acao}
             onChange={handleChangeAcao}
           >
-            <MenuItem value={"Ten"}>Ten</MenuItem>
+            {/* <MenuItem value={"Ten"}>Ten</MenuItem>
             <MenuItem value={"Twenty"}>Twenty</MenuItem>
-            <MenuItem value={"Thirty"}>Thirty</MenuItem>
+            <MenuItem value={"Thirty"}>Thirty</MenuItem> */}
+            {stocks &&
+              stocks.map((stock) => {
+                return (
+                  <MenuItem id={stock} value={stock}>
+                    {stock}
+                  </MenuItem>
+                );
+              })}
           </Select>
           <Submit onClick={addStock}>Adicionar</Submit>
         </LeftPainel>
@@ -183,6 +195,7 @@ const Portifolio = () => {
           <Submit onClick={portifolio}>Ver Portifólio</Submit>
         </RightPainel>
       </Painel>
+      <Image hidden={showImage} />
     </Container>
   );
 };

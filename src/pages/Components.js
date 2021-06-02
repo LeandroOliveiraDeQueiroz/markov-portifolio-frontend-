@@ -55,6 +55,12 @@ const Submit = styled.button`
   margin-left: 15px;
 `;
 
+const Image = styled.img`
+  margin: auto;
+  max-width: 500px;
+  display: ${(props) => (props.show ? "block" : "none")};
+`;
+
 export {
   Container,
   Title,
@@ -63,4 +69,5 @@ export {
   RightPainel,
   LeftPainel,
   Submit,
+  Image,
 };
