@@ -64,7 +64,10 @@ const Portifolio = () => {
   const [risk, setRisk] = useState("");
   const [acao, setAcao] = useState("");
   const [id, setId] = useState(1);
-  const [showImage, setShowImage] = useState(false);
+  const [
+    showImage,
+    // setShowImage
+  ] = useState(false);
 
   const handleClickCheckIn = (e) => {
     setCheckInDay(e.target.value);

@@ -41,14 +41,14 @@ const RightPainel = styled.div`
 `;
 
 const Submit = styled.button`
-   padding: 0.35em 1.2em;
-   border: 0.1em solid #ffffff;
-   border-radius: 0.12em;
-   box-sizing: border-box;
-   text-decoration: none;
-   font-family: "Roboto", sans-serif;
-   font-weight: 300;
-   color: #ffffff;
+  padding: 0.35em 1.2em;
+  border: 0.1em solid #ffffff;
+  border-radius: 0.12em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  color: #ffffff;
   background: rgba(0, 0, 0, 0.7);
   height: 30px;
   /* margin: auto unset; */
