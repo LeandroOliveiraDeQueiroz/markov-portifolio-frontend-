@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { DataGrid } from "@material-ui/data-grid";
 import DeleteIcon from "@material-ui/icons/Delete";
-// import TextField from "@material-ui/core/TextField";
-// import InputLabel from "@material-ui/core/InputLabel";
+
 import {
   Select,
   TextField,
@@ -10,7 +9,6 @@ import {
   MenuItem,
   Slider,
 } from "@material-ui/core";
-// import MenuItem from "@material-ui/core/MenuItem";
 
 import {
   Container,
@@ -29,10 +27,17 @@ const stocks = [
   "NVDA",
   "PYPL",
   "NFLX",
+  "AMZN",
+  "AAPL",
+  "TSLA",
+  "VIVA3.SA",
   "VALE3.SA",
   "MGLU3.SA",
   "BIDI11.SA",
-  "AAPL",
+  "PETR4.SA",
+  "ITUB4.SA",
+  "ABEV3.SA",
+  "SULA11.SA",
 ];
 
 const Portifolio = () => {
@@ -43,23 +48,6 @@ const Portifolio = () => {
       type: "string",
       flex: 0.5,
     },
-    // {
-    //   field: "risk",
-    //   headerName: "Risco",
-    //   flex: 0.2,
-    // },
-    // {
-    //   field: "dateInit",
-    //   headerName: "Início",
-    //   type: "string",
-    //   flex: 0.2,
-    // },
-    // {
-    //   field: "dateEnd",
-    //   headerName: "Fim",
-    //   type: "string",
-    //   flex: 0.2,
-    // },
     {
       field: "weight",
       headerName: "% Alocada",
@@ -103,7 +91,6 @@ const Portifolio = () => {
       {
         id: id,
         name: acao,
-        // dateInit: checkInDay, dateEnd: checkOutDay
       },
     ]);
     setId(id + 1);
@@ -113,7 +100,7 @@ const Portifolio = () => {
     let i = 0;
     setRows(
       rows.map((row) => {
-        row["weight"] = weights[i];
+        row["weight"] = (weights[i] * 100).toFixed(2) + "%";
         i = i + 1;
         return row;
       })
@@ -139,7 +126,7 @@ const Portifolio = () => {
       return { nome: row.name };
     });
     const data = {
-      vlRisco: risk / 100,
+      vlRisco: risk,
       dtInicio: checkInDay,
       dtFim: checkOutDay,
       lstAcoes: choosedStock,
@@ -149,7 +136,7 @@ const Portifolio = () => {
       let response = await fetch("https://lucasapi.pythonanywhere.com/acao/", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json;charset=utf-8",
+          "Content-Type": "application/json; charset=utf-8",
         },
         body: JSON.stringify(data),
       });
@@ -157,7 +144,6 @@ const Portifolio = () => {
       let result = await response.json();
       console.log(result);
 
-      // setImage({show: true, url: result.imgUrl});
       let expectedReturn = result.resultado.shift();
       let volatility = result.resultado.shift();
       setPortifolioResult({
@@ -189,10 +175,7 @@ const Portifolio = () => {
       </DataGridContainer>
       <Painel>
         <LeftPainel>
-          <DeleteIcon
-            // style={{ margin: "auto unset" }}
-            onClick={deleteStocks}
-          />
+          <DeleteIcon onClick={deleteStocks} />
 
           <InputLabel
             style={{ marginLeft: "15px" }}
@@ -207,9 +190,6 @@ const Portifolio = () => {
             value={acao}
             onChange={handleChangeAcao}
           >
-            {/* <MenuItem value={"Ten"}>Ten</MenuItem>
-            <MenuItem value={"Twenty"}>Twenty</MenuItem>
-            <MenuItem value={"Thirty"}>Thirty</MenuItem> */}
             {stocks &&
               stocks.map((stock) => {
                 return (
@@ -257,12 +237,18 @@ const Portifolio = () => {
           <Submit onClick={portifolio}>Ver Portifólio</Submit>
         </RightPainel>
       </Painel>
-      <Results>
+      <Results show={portifolioResult.show}>
         <p>
-          {"Retorno do Esperado Portifolio" + portifolioResult.expectedReturn}
+          {"Retorno do Esperado Portifolio: " +
+            (portifolioResult.expectedReturn * 100).toFixed(2) +
+            "%"}
         </p>
-        <p>{"Volatidade Portifolio" + portifolioResult.volatility}</p>
-        <Image hidden={portifolioResult.show} src={portifolioResult.url} />
+        <p>
+          {"Volatidade Portifolio: " +
+            (portifolioResult.volatility * 100).toFixed(2) +
+            "%"}
+        </p>
+        <Image src={"https://" + portifolioResult.url} />
       </Results>
     </Container>
   );

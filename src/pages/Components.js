@@ -27,7 +27,7 @@ const Painel = styled.div`
 `;
 
 const LeftPainel = styled.div`
-  display: flex; // painel em uma linha
+  display: flex;
   text-align: left;
   align-items: center;
   padding: 10px 0px 0px;
@@ -35,7 +35,7 @@ const LeftPainel = styled.div`
 
 const RightPainel = styled.div`
   display: flex;
-  margin-left: auto; // painel em uma linha
+  margin-left: auto;
   align-items: center;
   justify-content: flex-end;
 `;
@@ -51,7 +51,6 @@ const Submit = styled.button`
   color: #ffffff;
   background: rgba(0, 0, 0, 0.7);
   height: 30px;
-  /* margin: auto unset; */
   margin-left: 15px;
 `;
 
