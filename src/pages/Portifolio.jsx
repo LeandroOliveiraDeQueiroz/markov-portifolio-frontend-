@@ -21,9 +21,19 @@ import {
   LeftPainel,
   Submit,
   Image,
+  Results,
 } from "./Components";
 
-const stocks = ["Ten", "Twenty", "Thirty"];
+const stocks = [
+  "MSFT",
+  "NVDA",
+  "PYPL",
+  "NFLX",
+  "VALE3.SA",
+  "MGLU3.SA",
+  "BIDI11.SA",
+  "AAPL",
+];
 
 const Portifolio = () => {
   const columns = [
@@ -61,13 +71,15 @@ const Portifolio = () => {
   const [selectionModel, setSelectionModel] = useState([]);
   const [checkInDay, setCheckInDay] = useState("");
   const [checkOutDay, setCheckOutDay] = useState("");
-  const [risk, setRisk] = useState("");
+  const [risk, setRisk] = useState(0);
   const [acao, setAcao] = useState("");
   const [id, setId] = useState(1);
-  const [
-    showImage,
-    // setShowImage
-  ] = useState(false);
+  const [portifolioResult, setPortifolioResult] = useState({
+    show: false,
+    url: "",
+    expectedReturn: "",
+    volatility: "",
+  });
 
   const handleClickCheckIn = (e) => {
     setCheckInDay(e.target.value);
@@ -97,6 +109,17 @@ const Portifolio = () => {
     setId(id + 1);
   };
 
+  const addWeights = (weights) => {
+    let i = 0;
+    setRows(
+      rows.map((row) => {
+        row["weight"] = weights[i];
+        i = i + 1;
+        return row;
+      })
+    );
+  };
+
   const deleteStocks = () => {
     setRows(
       rows.filter(({ id }) => {
@@ -111,7 +134,43 @@ const Portifolio = () => {
     );
   };
 
-  const portifolio = () => {};
+  const portifolio = async () => {
+    const choosedStock = rows.map((row) => {
+      return { nome: row.name };
+    });
+    const data = {
+      vlRisco: risk / 100,
+      dtInicio: checkInDay,
+      dtFim: checkOutDay,
+      lstAcoes: choosedStock,
+    };
+
+    try {
+      let response = await fetch("http://lucasapi.pythonanywhere.com/acao/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify(data),
+      });
+
+      let result = await response.json();
+      console.log(result);
+
+      // setImage({show: true, url: result.imgUrl});
+      let expectedReturn = result.resultado.shift();
+      let volatility = result.resultado.shift();
+      setPortifolioResult({
+        show: true,
+        url: result.imgUrl,
+        expectedReturn: expectedReturn,
+        volatility: volatility,
+      });
+      addWeights(result.resultado);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Container>
@@ -198,7 +257,13 @@ const Portifolio = () => {
           <Submit onClick={portifolio}>Ver Portifólio</Submit>
         </RightPainel>
       </Painel>
-      <Image hidden={showImage} />
+      <Results>
+        <p>
+          {"Retorno do Esperado Portifolio" + portifolioResult.expectedReturn}
+        </p>
+        <p>{"Volatidade Portifolio" + portifolioResult.volatility}</p>
+        <Image hidden={portifolioResult.show} src={portifolioResult.url} />
+      </Results>
     </Container>
   );
 };
