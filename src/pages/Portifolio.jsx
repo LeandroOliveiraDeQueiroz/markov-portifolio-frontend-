@@ -146,7 +146,7 @@ const Portifolio = () => {
     };
 
     try {
-      let response = await fetch("http://lucasapi.pythonanywhere.com/acao/", {
+      let response = await fetch("https://lucasapi.pythonanywhere.com/acao/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
